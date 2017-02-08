@@ -1,0 +1,23 @@
+---
+- hosts: 127.0.0.1
+  remote_user: root
+  vars:
+   sshd_port: 22
+   sshd_banner: 'SSHD_SERVER_WITH_VARS'
+   authorized_keys_command: /usr/libexec/openssh/ssh-ldap-wrapper
+  tasks:
+   - name: sshd configuration file update
+     template: 
+       src: /etc/ansible/sshd_config.j2 
+       dest: /etc/ssh/sshd_config
+       owner: root
+       group: root
+       mode: '0644' 
+       validate: /usr/sbin/sshd -T -f %s
+       backup: yes
+     notify:
+      - restart sshd
+  handlers:
+    - name: restart sshd
+      service: name=sshd state=restarted
+

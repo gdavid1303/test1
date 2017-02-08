@@ -1,0 +1,21 @@
+- name: test play
+  hosts: 127.0.0.1
+  vars:
+    adevar: true
+
+  tasks:
+    - shell: cat /etc/motd
+      register: motd_contents
+    - shell: echo "motd contains the world hello"
+      when: motd_contents.stdout.find('hello') != -1
+    - command: /bin/ping -c 3 127.0.0.1
+      #when: result|success
+      register: myoutput
+    - debug: msg="The answer is {{ myoutput }}"
+    - debug: msg="You are in {{ ansible_hostname }}"
+    - debug: msg="The IP address is {{ ansible_default_ipv4.address }}"
+ 
+
+
+
+

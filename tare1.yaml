@@ -1,0 +1,8 @@
+- name: test play
+  hosts: 127.0.0.1
+  vars:
+    adevar: true
+  tasks:
+    - shell: /usr/bin/uptime
+      register: result
+    - debug: msg="Uptime is {{ result }}" 
